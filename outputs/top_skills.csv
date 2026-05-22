@@ -1,0 +1,73 @@
+skill,demand_count,demand_percent
+reporting,41,43.2
+Excel,38,40.0
+Python,37,38.9
+SQL,35,36.8
+dashboard,32,33.7
+data cleaning,27,28.4
+data visualization,23,24.2
+machine learning,20,21.1
+Tableau,15,15.8
+pandas,13,13.7
+scikit-learn,11,11.6
+Power BI,11,11.6
+Git,9,9.5
+REST API,9,9.5
+business process,9,9.5
+requirements analysis,8,8.4
+GitHub,8,8.4
+UAT,8,8.4
+NLP,7,7.4
+deep learning,7,7.4
+JavaScript,7,7.4
+Linux,7,7.4
+statistics,7,7.4
+Looker,5,5.3
+AWS,5,5.3
+prototyping,5,5.3
+Figma,5,5.3
+motion graphics,5,5.3
+computer vision,4,4.2
+Google Data Studio,4,4.2
+TensorFlow,4,4.2
+MySQL,4,4.2
+React,4,4.2
+software testing,4,4.2
+HTML/CSS,4,4.2
+CRM,4,4.2
+system analysis,4,4.2
+IT documentation,4,4.2
+UI/UX design,4,4.2
+cybersecurity,4,4.2
+incident response,4,4.2
+PyTorch,3,3.2
+PostgreSQL,3,3.2
+Agile,3,3.2
+Docker,3,3.2
+Adobe Premiere Pro,3,3.2
+wireframing,3,3.2
+vulnerability assessment,3,3.2
+troubleshooting,3,3.2
+Firebase,2,2.1
+SQLite,2,2.1
+game development,2,2.1
+Node.js,2,2.1
+ERP,2,2.1
+Adobe Illustrator,2,2.1
+Adobe Photoshop,2,2.1
+video editing,2,2.1
+Unity,2,2.1
+firewall,2,2.1
+networking,2,2.1
+Azure,1,1.1
+Google Cloud,1,1.1
+Express.js,1,1.1
+MongoDB,1,1.1
+Flutter,1,1.1
+NumPy,1,1.1
+C#,1,1.1
+C++,1,1.1
+Blender,1,1.1
+Java,1,1.1
+OOP,1,1.1
+PHP,1,1.1

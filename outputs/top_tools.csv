@@ -1,0 +1,33 @@
+tool,demand_count,demand_percent
+Excel,38,40.0
+Tableau,15,15.8
+pandas,13,13.7
+scikit-learn,11,11.6
+Power BI,11,11.6
+Git,9,9.5
+GitHub,8,8.4
+Linux,7,7.4
+Looker,5,5.3
+AWS,5,5.3
+Figma,5,5.3
+Google Data Studio,4,4.2
+TensorFlow,4,4.2
+MySQL,4,4.2
+React,4,4.2
+PyTorch,3,3.2
+PostgreSQL,3,3.2
+Docker,3,3.2
+Adobe Premiere Pro,3,3.2
+Firebase,2,2.1
+SQLite,2,2.1
+Node.js,2,2.1
+Adobe Illustrator,2,2.1
+Adobe Photoshop,2,2.1
+Unity,2,2.1
+Azure,1,1.1
+Google Cloud,1,1.1
+Express.js,1,1.1
+MongoDB,1,1.1
+Flutter,1,1.1
+NumPy,1,1.1
+Blender,1,1.1
