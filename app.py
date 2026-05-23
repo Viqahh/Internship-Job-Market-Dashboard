@@ -54,20 +54,34 @@ def apply_custom_styles() -> None:
     st.markdown(
         """
         <style>
-        [data-testid="collapsedControl"] button {
+        [data-testid="collapsedControl"] button,
+        [data-testid="stSidebarCollapsedControl"] button,
+        button[aria-label="Open sidebar"],
+        button[title="Open sidebar"] {
             width: 178px !important;
             height: 42px !important;
+            min-width: 178px !important;
             border-radius: 999px !important;
             background: #2f80ed !important;
             border: 1px solid rgba(255, 255, 255, 0.22) !important;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26) !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 16px !important;
         }
 
-        [data-testid="collapsedControl"] button svg {
+        [data-testid="collapsedControl"] button > *,
+        [data-testid="stSidebarCollapsedControl"] button > *,
+        button[aria-label="Open sidebar"] > *,
+        button[title="Open sidebar"] > * {
             display: none !important;
         }
 
-        [data-testid="collapsedControl"] button::before {
+        [data-testid="collapsedControl"] button::before,
+        [data-testid="stSidebarCollapsedControl"] button::before,
+        button[aria-label="Open sidebar"]::before,
+        button[title="Open sidebar"]::before {
             content: "🔍 Search & Filters";
             color: white;
             font-weight: 700;
