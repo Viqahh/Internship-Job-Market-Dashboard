@@ -1,11 +1,11 @@
-"""Streamlit dashboard for internship job market intelligence."""
+"""Streamlit dashboard for Computer Science internship market intelligence."""
 
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
-import matplotlib.pyplot as plt
+import altair as alt
 import pandas as pd
 import streamlit as st
 
@@ -29,6 +29,15 @@ JOB_TABLE_COLUMNS = {
     "extracted_tools": "Tools Found",
     "extracted_soft_skills": "Soft Skills Found",
     "source_platform": "Source Platform",
+}
+
+
+PAGE_OPTIONS = {
+    "Overview": "Quick summary of the internship market.",
+    "Detailed Charts": "Interactive charts for skills, tools, roles, and locations.",
+    "Skill Gap": "Compare your skills with market demand.",
+    "Job Search": "Search and inspect individual job postings.",
+    "Data Source": "How the data is collected and why JobStreet is manual-only here.",
 }
 
 
@@ -64,40 +73,140 @@ def parse_current_skills(skill_text: str) -> list[str]:
 def format_skill_list(value: object) -> str:
     """Make semicolon-separated skill strings easier to read in tables."""
 
-    skills = split_values(value)
-    return ", ".join(skills)
+    return ", ".join(split_values(value))
 
 
-def count_semicolon_values(df: pd.DataFrame, column: str) -> pd.DataFrame:
+def count_semicolon_values(df: pd.DataFrame, column: str, label: str) -> pd.DataFrame:
+    """Count semicolon-separated values and add percent of postings."""
+
     values = []
     if column not in df.columns:
-        return pd.DataFrame(columns=["item", "count"])
+        return pd.DataFrame(columns=[label, "Postings", "Share"])
 
     for value in df[column].fillna(""):
         values.extend(split_values(value))
 
     if not values:
-        return pd.DataFrame(columns=["item", "count"])
+        return pd.DataFrame(columns=[label, "Postings", "Share"])
 
     counts = pd.Series(values).value_counts().reset_index()
-    counts.columns = ["item", "count"]
+    counts.columns = [label, "Postings"]
+    counts["Share"] = (counts["Postings"] / max(len(df), 1) * 100).round(1)
+    counts["Market Demand"] = counts.apply(
+        lambda row: f"{int(row['Postings'])} postings ({row['Share']}%)",
+        axis=1,
+    )
     return counts
 
 
-def plot_horizontal_bar(data: pd.DataFrame, label_column: str, value_column: str, title: str, color: str):
-    fig, ax = plt.subplots(figsize=(8, 4.8))
-    plot_df = data.sort_values(value_column, ascending=True)
-    ax.barh(plot_df[label_column], plot_df[value_column], color=color)
-    ax.set_title(title, fontsize=13, weight="bold")
-    ax.set_xlabel("Number of postings")
-    ax.grid(axis="x", alpha=0.25)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    return fig
+def count_column_values(df: pd.DataFrame, column: str, label: str) -> pd.DataFrame:
+    """Count normal categorical columns."""
+
+    counts = df[column].value_counts().reset_index()
+    counts.columns = [label, "Postings"]
+    counts["Share"] = (counts["Postings"] / max(len(df), 1) * 100).round(1)
+    return counts
+
+
+def make_bar_chart(
+    data: pd.DataFrame,
+    x_column: str,
+    y_column: str,
+    title: str,
+    color_column: str | None = None,
+    height: int = 420,
+) -> alt.Chart:
+    """Create a clean interactive horizontal bar chart."""
+
+    chart = (
+        alt.Chart(data)
+        .mark_bar(cornerRadiusEnd=4)
+        .encode(
+            x=alt.X(f"{x_column}:Q", title="Postings"),
+            y=alt.Y(f"{y_column}:N", sort="-x", title=None),
+            color=alt.Color(f"{color_column}:N", legend=None) if color_column else alt.value("#3f7f93"),
+            tooltip=[
+                alt.Tooltip(f"{y_column}:N", title=y_column),
+                alt.Tooltip(f"{x_column}:Q", title="Postings"),
+                alt.Tooltip("Share:Q", title="Share of postings", format=".1f"),
+            ],
+        )
+        .properties(title=title, height=height)
+    )
+    return chart
+
+
+def make_donut_chart(data: pd.DataFrame, name_column: str, title: str) -> alt.Chart:
+    """Create an interactive donut chart."""
+
+    return (
+        alt.Chart(data)
+        .mark_arc(innerRadius=65, outerRadius=120)
+        .encode(
+            theta=alt.Theta("Postings:Q"),
+            color=alt.Color(f"{name_column}:N", title=name_column),
+            tooltip=[
+                alt.Tooltip(f"{name_column}:N", title=name_column),
+                alt.Tooltip("Postings:Q"),
+                alt.Tooltip("Share:Q", title="Share of postings", format=".1f"),
+            ],
+        )
+        .properties(title=title, height=340)
+    )
+
+
+def build_skill_role_data(df: pd.DataFrame, top_n: int = 12) -> pd.DataFrame:
+    """Return long-form skill by role data for stacked charts."""
+
+    rows = []
+    for _, row in df.iterrows():
+        for skill in split_values(row.get("extracted_technical_skills", "")):
+            rows.append({"Role Category": row["job_category"], "Skill": skill})
+
+    if not rows:
+        return pd.DataFrame(columns=["Role Category", "Skill", "Postings"])
+
+    long_df = pd.DataFrame(rows)
+    top_skills = long_df["Skill"].value_counts().head(top_n).index
+    long_df = long_df[long_df["Skill"].isin(top_skills)]
+    return long_df.groupby(["Role Category", "Skill"]).size().reset_index(name="Postings")
+
+
+def build_display_table(df: pd.DataFrame) -> pd.DataFrame:
+    """Return readable job table columns."""
+
+    display_table = df[list(JOB_TABLE_COLUMNS.keys())].copy()
+    for column in ["extracted_technical_skills", "extracted_tools", "extracted_soft_skills"]:
+        display_table[column] = display_table[column].apply(format_skill_list)
+    return display_table.rename(columns=JOB_TABLE_COLUMNS)
+
+
+def choose_page() -> str:
+    """Search-style page selector for the sidebar."""
+
+    st.sidebar.title("Dashboard Search")
+    page_query = st.sidebar.text_input(
+        "Find a page",
+        placeholder="Try: overview, charts, skill, jobs",
+    ).strip().lower()
+
+    page_names = list(PAGE_OPTIONS.keys())
+    if page_query:
+        matches = [
+            page
+            for page in page_names
+            if page_query in page.lower() or page_query in PAGE_OPTIONS[page].lower()
+        ]
+        page_names = matches or page_names
+
+    selected_page = st.sidebar.radio("Open page", page_names)
+    st.sidebar.caption(PAGE_OPTIONS[selected_page])
+    return selected_page
 
 
 def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     with st.sidebar:
+        st.divider()
         st.header("Filters")
 
         category_options = sorted(df["job_category"].dropna().unique())
@@ -115,123 +224,141 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     selected_work_modes = selected_work_modes or work_mode_options
     selected_sources = selected_sources or source_options
 
-    filtered_df = df[
+    return df[
         df["job_category"].isin(selected_categories)
         & df["location"].isin(selected_locations)
         & df["work_mode"].isin(selected_work_modes)
         & df["source_platform"].isin(selected_sources)
     ].copy()
 
-    return filtered_df
+
+def show_header() -> None:
+    st.title("Computer Science Internship Job Market Intelligence Dashboard")
+    st.caption("Explore CS internship trends and see which skills are worth learning next.")
 
 
 def show_kpis(df: pd.DataFrame) -> None:
     total_postings = len(df)
     total_companies = df["company"].nunique() if not df.empty else 0
     top_category = df["job_category"].mode().iloc[0] if not df.empty else "N/A"
-    top_category_display = top_category.replace(" Intern", "")
 
-    top_skills = count_semicolon_values(df, "extracted_technical_skills")
-    top_skill = top_skills.iloc[0]["item"] if not top_skills.empty else "N/A"
+    top_skills = count_semicolon_values(df, "extracted_technical_skills", "Skill")
+    top_skill = top_skills.iloc[0]["Skill"] if not top_skills.empty else "N/A"
 
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Job postings", total_postings)
+    col1.metric("Postings analyzed", total_postings)
     col2.metric("Companies", total_companies)
-    col3.metric("Top role", top_category_display)
+    col3.metric("Top role category", top_category.replace(" Intern", ""))
     col4.metric("Most demanded skill", top_skill)
 
 
-def show_distribution_charts(df: pd.DataFrame) -> None:
-    role_counts = df["job_category"].value_counts().reset_index()
-    role_counts.columns = ["job_category", "count"]
+def show_overview_page(df: pd.DataFrame) -> None:
+    show_header()
+    show_kpis(df)
 
-    work_counts = df["work_mode"].value_counts().reset_index()
-    work_counts.columns = ["work_mode", "count"]
+    st.divider()
+    col1, col2 = st.columns([1.2, 1])
 
-    col1, col2 = st.columns(2)
     with col1:
-        st.pyplot(plot_horizontal_bar(role_counts, "job_category", "count", "Role Distribution", "#2f6f73"))
-    with col2:
-        st.pyplot(plot_horizontal_bar(work_counts, "work_mode", "count", "Work Mode Distribution", "#8f5f2a"))
-
-
-def show_skill_charts(df: pd.DataFrame) -> None:
-    top_skills = count_semicolon_values(df, "extracted_technical_skills").head(10)
-    top_tools = count_semicolon_values(df, "extracted_tools").head(10)
-    top_soft = count_semicolon_values(df, "extracted_soft_skills").head(10)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if not top_skills.empty:
-            st.pyplot(plot_horizontal_bar(top_skills, "item", "count", "Top 10 Technical Skills", "#3563a8"))
-        else:
-            st.info("No skill data available for the selected filters.")
-
-    with col2:
-        if not top_tools.empty:
-            st.pyplot(plot_horizontal_bar(top_tools, "item", "count", "Top 10 Tools", "#6b8f2a"))
-        else:
-            st.info("No tool data available for the selected filters.")
-
-    if not top_soft.empty:
-        st.pyplot(plot_horizontal_bar(top_soft, "item", "count", "Most Common Soft Skills", "#9b4d83"))
-
-
-def show_skills_by_category(df: pd.DataFrame) -> None:
-    rows = []
-    for _, row in df.iterrows():
-        for skill in split_values(row.get("extracted_technical_skills", "")):
-            rows.append({"job_category": row["job_category"], "skill": skill})
-
-    if not rows:
-        st.info("No skills by category available for the selected filters.")
-        return
-
-    skill_role_df = pd.DataFrame(rows)
-    top_skills = skill_role_df["skill"].value_counts().head(12).index.tolist()
-    skill_role_df = skill_role_df[skill_role_df["skill"].isin(top_skills)]
-
-    pivot = (
-        skill_role_df.groupby(["job_category", "skill"])
-        .size()
-        .unstack(fill_value=0)
-        .sort_index()
-    )
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    pivot.plot(kind="bar", stacked=True, ax=ax, colormap="tab20")
-    ax.set_title("Skills by Job Category", fontsize=13, weight="bold")
-    ax.set_xlabel("Job category")
-    ax.set_ylabel("Number of mentions")
-    ax.legend(title="Skill", bbox_to_anchor=(1.02, 1), loc="upper left")
-    ax.grid(axis="y", alpha=0.25)
-    fig.tight_layout()
-    st.pyplot(fig)
-
-
-def show_location_distribution(df: pd.DataFrame) -> None:
-    location_counts = df["location"].value_counts().head(12).reset_index()
-    location_counts.columns = ["location", "count"]
-
-    if not location_counts.empty:
-        st.pyplot(
-            plot_horizontal_bar(
-                location_counts,
-                "location",
-                "count",
-                "Location Distribution",
-                "#c06c40",
-            )
+        role_counts = count_column_values(df, "job_category", "Role Category")
+        st.altair_chart(
+            make_bar_chart(
+                role_counts,
+                "Postings",
+                "Role Category",
+                "Role category distribution",
+                color_column="Role Category",
+            ),
+            use_container_width=True,
         )
 
+    with col2:
+        work_counts = count_column_values(df, "work_mode", "Work Mode")
+        st.altair_chart(
+            make_donut_chart(work_counts, "Work Mode", "Work mode mix"),
+            use_container_width=True,
+        )
 
-def show_recommendations(df: pd.DataFrame) -> None:
+    st.subheader("Quick Insight")
+    top_tools = count_semicolon_values(df, "extracted_tools", "Tool").head(5)
+    top_tool_text = ", ".join(top_tools["Tool"].tolist()) if not top_tools.empty else "N/A"
+    st.write(
+        f"The current filtered dataset contains **{len(df)} postings**. "
+        f"The most common tools in this view are **{top_tool_text}**."
+    )
+
+
+def show_detailed_charts_page(df: pd.DataFrame) -> None:
+    show_header()
+    st.subheader("Detailed Interactive Charts")
+
+    top_skills = count_semicolon_values(df, "extracted_technical_skills", "Skill").head(15)
+    top_tools = count_semicolon_values(df, "extracted_tools", "Tool").head(15)
+    top_soft = count_semicolon_values(df, "extracted_soft_skills", "Soft Skill").head(12)
+    location_counts = count_column_values(df, "location", "Location").head(15)
+    skill_role_df = build_skill_role_data(df)
+
+    chart_tabs = st.tabs(["Skills", "Tools", "Roles", "Locations", "Skill by Role"])
+
+    with chart_tabs[0]:
+        st.altair_chart(
+            make_bar_chart(top_skills, "Postings", "Skill", "Top skills requested by employers", "Skill", 520),
+            use_container_width=True,
+        )
+        st.dataframe(top_skills[["Skill", "Postings", "Share", "Market Demand"]], width="stretch", hide_index=True)
+
+    with chart_tabs[1]:
+        st.altair_chart(
+            make_bar_chart(top_tools, "Postings", "Tool", "Most mentioned tools and platforms", "Tool", 520),
+            use_container_width=True,
+        )
+        st.dataframe(top_tools[["Tool", "Postings", "Share", "Market Demand"]], width="stretch", hide_index=True)
+
+    with chart_tabs[2]:
+        role_counts = count_column_values(df, "job_category", "Role Category")
+        work_counts = count_column_values(df, "work_mode", "Work Mode")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.altair_chart(
+                make_bar_chart(role_counts, "Postings", "Role Category", "Role categories", "Role Category"),
+                use_container_width=True,
+            )
+        with col2:
+            st.altair_chart(make_donut_chart(work_counts, "Work Mode", "Work mode"), use_container_width=True)
+
+    with chart_tabs[3]:
+        st.altair_chart(
+            make_bar_chart(location_counts, "Postings", "Location", "Location distribution", "Location", 520),
+            use_container_width=True,
+        )
+
+    with chart_tabs[4]:
+        if skill_role_df.empty:
+            st.info("No skill by role data available for the selected filters.")
+        else:
+            stacked_chart = (
+                alt.Chart(skill_role_df)
+                .mark_bar(cornerRadiusEnd=3)
+                .encode(
+                    x=alt.X("Postings:Q", title="Skill mentions"),
+                    y=alt.Y("Role Category:N", sort="-x", title=None),
+                    color=alt.Color("Skill:N", title="Skill"),
+                    tooltip=["Role Category:N", "Skill:N", "Postings:Q"],
+                )
+                .properties(title="Top skills by role category", height=520)
+            )
+            st.altair_chart(stacked_chart, use_container_width=True)
+
+
+def show_recommendations_page(df: pd.DataFrame) -> None:
+    show_header()
     st.subheader("Skill Gap Recommendation")
-    st.caption("This section follows the filters you choose in the sidebar, so you can focus on one target role category.")
+    st.caption("This page follows the filters in the sidebar, so choose a role category first if you want targeted advice.")
 
     current_skill_text = st.text_input(
         "Your current skills",
         value=", ".join(DEFAULT_CURRENT_SKILLS),
+        placeholder="Example: Java, JavaScript, React",
     )
     current_skills = parse_current_skills(current_skill_text)
 
@@ -272,17 +399,21 @@ def show_recommendations(df: pd.DataFrame) -> None:
         ].set_index("Rank")
     )
 
-    st.markdown("**What You Should Learn First**")
+    st.subheader("What You Should Learn First")
     for item in learning_plan:
         st.write(item)
 
 
-def show_searchable_table(df: pd.DataFrame) -> None:
+def show_job_search_page(df: pd.DataFrame) -> None:
+    show_header()
     st.subheader("Search Job Postings")
 
-    search_text = st.text_input("Search title, company, description, or skills").strip().lower()
-    table_df = df.copy()
+    search_text = st.text_input(
+        "Search by title, company, location, skill, or description",
+        placeholder="Example: React, Figma, cybersecurity, data science",
+    ).strip().lower()
 
+    table_df = df.copy()
     if search_text:
         search_columns = [
             "job_title",
@@ -290,53 +421,68 @@ def show_searchable_table(df: pd.DataFrame) -> None:
             "job_description",
             "extracted_skills",
             "location",
+            "job_category",
         ]
-        mask = False
+        mask = pd.Series(False, index=table_df.index)
         for column in search_columns:
             mask = mask | table_df[column].fillna("").str.lower().str.contains(search_text, regex=False)
         table_df = table_df[mask]
 
-    display_table = table_df[list(JOB_TABLE_COLUMNS.keys())].copy()
-    for column in ["extracted_technical_skills", "extracted_tools", "extracted_soft_skills"]:
-        display_table[column] = display_table[column].apply(format_skill_list)
-    display_table = display_table.rename(columns=JOB_TABLE_COLUMNS)
+    st.caption(f"Showing {len(table_df)} matching postings.")
+    st.dataframe(build_display_table(table_df), width="stretch", hide_index=True)
 
-    st.dataframe(
-        display_table,
-        width="stretch",
-        hide_index=True,
+
+def show_data_source_page(df: pd.DataFrame) -> None:
+    show_header()
+    st.subheader("Data Source")
+
+    st.write(
+        "This dashboard currently uses a curated CSV dataset stored in the project. "
+        "The dataset is designed for portfolio testing and can be expanded manually."
     )
+
+    st.markdown("**Why not direct JobStreet fetching?**")
+    st.write(
+        "JobStreet/SEEK terms restrict automated scraping, harvesting, and data extraction without permission. "
+        "For a student portfolio, the safer method is manual collection: open a public posting, copy the important fields, "
+        "clean the text, and add the row into the CSV."
+    )
+
+    st.markdown("**Safe expansion workflow**")
+    st.write("1. Search internship postings on JobStreet, LinkedIn, company career pages, or other public platforms.")
+    st.write("2. Manually copy the title, company, location, description, skills, and source platform.")
+    st.write("3. Add the row to `data/raw_job_postings.csv`.")
+    st.write("4. Run `python analysis.py` again.")
+    st.write("5. Refresh the dashboard.")
+
+    st.markdown("**Current dataset summary**")
+    show_kpis(df)
 
 
 def main() -> None:
-    st.title("Computer Science Internship Job Market Intelligence Dashboard")
-    st.caption("Explore CS internship trends and see which skills are worth learning next.")
-
     df = load_dashboard_data()
 
     if df.empty:
         st.warning("No data found. Run `python analysis.py` first to create the cleaned CSV and SQLite database.")
         return
 
+    selected_page = choose_page()
     filtered_df = filter_dataframe(df)
 
     if filtered_df.empty:
         st.warning("No postings match the selected filters.")
         return
 
-    show_kpis(filtered_df)
-    st.divider()
-    show_skill_charts(filtered_df)
-    st.divider()
-    show_distribution_charts(filtered_df)
-    st.divider()
-    show_skills_by_category(filtered_df)
-    st.divider()
-    show_location_distribution(filtered_df)
-    st.divider()
-    show_recommendations(filtered_df)
-    st.divider()
-    show_searchable_table(filtered_df)
+    if selected_page == "Overview":
+        show_overview_page(filtered_df)
+    elif selected_page == "Detailed Charts":
+        show_detailed_charts_page(filtered_df)
+    elif selected_page == "Skill Gap":
+        show_recommendations_page(filtered_df)
+    elif selected_page == "Job Search":
+        show_job_search_page(filtered_df)
+    elif selected_page == "Data Source":
+        show_data_source_page(filtered_df)
 
 
 if __name__ == "__main__":
