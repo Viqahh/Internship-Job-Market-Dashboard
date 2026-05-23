@@ -37,7 +37,6 @@ PAGE_OPTIONS = {
     "Detailed Charts": "Interactive charts for skills, tools, roles, and locations.",
     "Skill Gap": "Compare your skills with market demand.",
     "Job Search": "Search and inspect individual job postings.",
-    "Data Source": "How the data is collected and why JobStreet is manual-only here.",
 }
 
 
@@ -279,12 +278,39 @@ def show_overview_page(df: pd.DataFrame) -> None:
             use_container_width=True,
         )
 
-    st.subheader("Quick Insight")
+    st.subheader("Market Takeaways")
+    role_counts = count_column_values(df, "job_category", "Role Category")
+    work_counts = count_column_values(df, "work_mode", "Work Mode")
+    top_skills = count_semicolon_values(df, "extracted_technical_skills", "Skill").head(5)
     top_tools = count_semicolon_values(df, "extracted_tools", "Tool").head(5)
-    top_tool_text = ", ".join(top_tools["Tool"].tolist()) if not top_tools.empty else "N/A"
-    st.write(
-        f"The current filtered dataset contains **{len(df)} postings**. "
-        f"The most common tools in this view are **{top_tool_text}**."
+
+    top_role = role_counts.iloc[0] if not role_counts.empty else None
+    top_work_mode = work_counts.iloc[0] if not work_counts.empty else None
+    top_skill = top_skills.iloc[0] if not top_skills.empty else None
+    top_tool_text = ", ".join(top_tools["Tool"].head(3).tolist()) if not top_tools.empty else "N/A"
+
+    insight_col1, insight_col2 = st.columns(2)
+    with insight_col1:
+        if top_role is not None:
+            st.info(
+                f"**Strongest role signal:** {top_role['Role Category']} appears in "
+                f"{int(top_role['Postings'])} postings ({top_role['Share']}%)."
+            )
+        if top_skill is not None:
+            st.info(
+                f"**Most repeated skill:** {top_skill['Skill']} appears in "
+                f"{int(top_skill['Postings'])} postings ({top_skill['Share']}%)."
+            )
+    with insight_col2:
+        if top_work_mode is not None:
+            st.info(
+                f"**Work mode pattern:** {top_work_mode['Work Mode']} is the most common setup "
+                f"({int(top_work_mode['Postings'])} postings)."
+            )
+        st.info(f"**Tools to notice:** {top_tool_text}.")
+
+    st.success(
+        "Use the Job category filter first, then open Skill Gap to get learning priorities for your target internship path."
     )
 
 
@@ -432,33 +458,6 @@ def show_job_search_page(df: pd.DataFrame) -> None:
     st.dataframe(build_display_table(table_df), width="stretch", hide_index=True)
 
 
-def show_data_source_page(df: pd.DataFrame) -> None:
-    show_header()
-    st.subheader("Data Source")
-
-    st.write(
-        "This dashboard currently uses a curated CSV dataset stored in the project. "
-        "The dataset is designed for portfolio testing and can be expanded manually."
-    )
-
-    st.markdown("**Why not direct JobStreet fetching?**")
-    st.write(
-        "JobStreet/SEEK terms restrict automated scraping, harvesting, and data extraction without permission. "
-        "For a student portfolio, the safer method is manual collection: open a public posting, copy the important fields, "
-        "clean the text, and add the row into the CSV."
-    )
-
-    st.markdown("**Safe expansion workflow**")
-    st.write("1. Search internship postings on JobStreet, LinkedIn, company career pages, or other public platforms.")
-    st.write("2. Manually copy the title, company, location, description, skills, and source platform.")
-    st.write("3. Add the row to `data/raw_job_postings.csv`.")
-    st.write("4. Run `python analysis.py` again.")
-    st.write("5. Refresh the dashboard.")
-
-    st.markdown("**Current dataset summary**")
-    show_kpis(df)
-
-
 def main() -> None:
     df = load_dashboard_data()
 
@@ -481,8 +480,6 @@ def main() -> None:
         show_recommendations_page(filtered_df)
     elif selected_page == "Job Search":
         show_job_search_page(filtered_df)
-    elif selected_page == "Data Source":
-        show_data_source_page(filtered_df)
 
 
 if __name__ == "__main__":
