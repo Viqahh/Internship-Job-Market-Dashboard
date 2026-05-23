@@ -48,6 +48,38 @@ st.set_page_config(
 )
 
 
+def apply_custom_styles() -> None:
+    """Small UI polish for the native Streamlit sidebar button."""
+
+    st.markdown(
+        """
+        <style>
+        [data-testid="collapsedControl"] button {
+            width: 178px !important;
+            height: 42px !important;
+            border-radius: 999px !important;
+            background: #2f80ed !important;
+            border: 1px solid rgba(255, 255, 255, 0.22) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.26) !important;
+        }
+
+        [data-testid="collapsedControl"] button svg {
+            display: none !important;
+        }
+
+        [data-testid="collapsedControl"] button::before {
+            content: "🔍 Search & Filters";
+            color: white;
+            font-weight: 700;
+            font-size: 0.92rem;
+            white-space: nowrap;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def load_dashboard_data() -> pd.DataFrame:
     """Load data from SQLite first, then fall back to cleaned CSV."""
 
@@ -235,7 +267,6 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 def show_header() -> None:
     st.title("Computer Science Internship Job Market Intelligence Dashboard")
     st.caption("Explore CS internship trends and see which skills are worth learning next.")
-    st.info("Use the left sidebar to search pages and filter by role, location, work mode, or source platform.")
 
 
 def show_kpis(df: pd.DataFrame) -> None:
@@ -461,6 +492,7 @@ def show_job_search_page(df: pd.DataFrame) -> None:
 
 
 def main() -> None:
+    apply_custom_styles()
     df = load_dashboard_data()
 
     if df.empty:
