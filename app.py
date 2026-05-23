@@ -44,6 +44,7 @@ st.set_page_config(
     page_title="CS Internship Job Market Intelligence",
     page_icon="bar_chart",
     layout="wide",
+    initial_sidebar_state="expanded",
 )
 
 
@@ -183,9 +184,9 @@ def build_display_table(df: pd.DataFrame) -> pd.DataFrame:
 def choose_page() -> str:
     """Search-style page selector for the sidebar."""
 
-    st.sidebar.title("Dashboard Search")
+    st.sidebar.title("Search & Filters")
     page_query = st.sidebar.text_input(
-        "Find a page",
+        "Search page",
         placeholder="Try: overview, charts, skill, jobs",
     ).strip().lower()
 
@@ -234,6 +235,7 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 def show_header() -> None:
     st.title("Computer Science Internship Job Market Intelligence Dashboard")
     st.caption("Explore CS internship trends and see which skills are worth learning next.")
+    st.info("Use the left sidebar to search pages and filter by role, location, work mode, or source platform.")
 
 
 def show_kpis(df: pd.DataFrame) -> None:
