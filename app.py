@@ -280,12 +280,13 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 
 def show_header() -> None:
     st.title("Computer Science Internship Job Market Intelligence Dashboard")
-    st.caption("Explore CS internship trends and see which skills are worth learning next.")
+    st.caption("Explore real early-career tech job postings and see which skills are worth learning next.")
 
 
 def show_kpis(df: pd.DataFrame) -> None:
     total_postings = len(df)
-    total_companies = df["company"].nunique() if not df.empty else 0
+    known_companies = df[df["company"] != "Not provided"]["company"] if not df.empty else []
+    total_companies = known_companies.nunique() if not df.empty else 0
     top_category = df["job_category"].mode().iloc[0] if not df.empty else "N/A"
 
     top_skills = count_semicolon_values(df, "extracted_technical_skills", "Skill")

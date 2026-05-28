@@ -52,8 +52,45 @@ def classify_role(job_title: object, job_description: object = "") -> str:
     if _contains_any(
         title,
         [
+            "ai intern",
+            "ai engineer",
+            "ai engineering",
+            "applied ai",
+            "ai research",
+            "ai model",
+            "ai analytics",
+            "ai data",
+            "junior ai",
+            "artificial intelligence",
+            "machine learning",
+            "ml engineer",
+            "ml intern",
+            "deep learning",
+            "computer vision",
+            "nlp",
+        ],
+    ):
+        return "AI / Machine Learning Intern"
+
+    if _contains_any(title, ["data science", "data scientist"]):
+        return "Data Science Intern"
+
+    if _contains_any(title, ["data analyst", "analytics intern", "reporting analyst"]):
+        return "Data Analyst Intern"
+
+    if _contains_any(title, ["business analyst", "bi analyst", "business intelligence"]):
+        return "Business Analyst Intern"
+
+    if _contains_any(title, ["product analyst", "product data", "growth analyst", "product intern", "product manager", "product management", "product operations analyst"]):
+        return "Product Analyst Intern"
+
+    if _contains_any(
+        title,
+        [
             "ui ux",
             "ux ui",
+            "ux research",
+            "user research",
             "user experience",
             "user interface",
             "graphic design",
@@ -87,7 +124,25 @@ def classify_role(job_title: object, job_description: object = "") -> str:
     if _contains_any(
         title,
         [
+            "information system",
+            "information systems",
+            "system analyst",
+            "systems analyst",
+            "erp",
+            "crm",
+            "business systems",
+            "functional analyst",
+            "implementation consultant",
+            "digital transformation",
+        ],
+    ):
+        return "Information Systems Intern"
+
+    if _contains_any(
+        title,
+        [
             "software engineer",
+            "software engineering",
             "software developer",
             "frontend",
             "front end",
@@ -107,54 +162,6 @@ def classify_role(job_title: object, job_description: object = "") -> str:
         ],
     ):
         return "Software Engineering Intern"
-
-    if _contains_any(
-        title,
-        [
-            "information system",
-            "information systems",
-            "system analyst",
-            "systems analyst",
-            "erp",
-            "crm",
-            "business systems",
-            "functional analyst",
-            "implementation consultant",
-            "digital transformation",
-        ],
-    ):
-        return "Information Systems Intern"
-
-    if _contains_any(title, ["business analyst", "bi analyst", "business intelligence"]):
-        return "Business Analyst Intern"
-
-    if _contains_any(title, ["product analyst", "product data", "growth analyst", "product intern", "product operations analyst"]):
-        return "Product Analyst Intern"
-
-    if _contains_any(title, ["data science", "data scientist"]):
-        return "Data Science Intern"
-
-    if _contains_any(title, ["data analyst", "analytics intern", "reporting analyst"]):
-        return "Data Analyst Intern"
-
-    if _contains_any(
-        title,
-        [
-            "ai intern",
-            "ai research",
-            "ai engineering",
-            "ai model",
-            "ai analytics",
-            "ai data",
-            "junior ai",
-            "artificial intelligence",
-            "machine learning",
-            "ml intern",
-            "computer vision",
-            "nlp",
-        ],
-    ):
-        return "AI / Machine Learning Intern"
 
     if _contains_any(title, ["data engineer", "data engineering", "analytics engineer", "database", "cloud data"]):
         return "Software Engineering Intern"

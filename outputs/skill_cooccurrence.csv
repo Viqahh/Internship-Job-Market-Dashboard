@@ -1,26 +1,26 @@
 skill_1,skill_2,cooccurrence_count
-Excel,reporting,32
-dashboard,reporting,30
-SQL,reporting,29
-SQL,dashboard,26
-Excel,dashboard,25
-Excel,SQL,23
-Python,machine learning,19
-data visualization,reporting,19
-Python,data cleaning,18
-SQL,data cleaning,16
-data cleaning,reporting,16
-Excel,data visualization,15
-dashboard,data visualization,15
-Python,reporting,14
-Python,SQL,13
-Tableau,dashboard,13
-Tableau,reporting,13
-Python,pandas,13
-SQL,data visualization,13
-dashboard,data cleaning,12
-Excel,data cleaning,11
-SQL,Tableau,11
-Python,scikit-learn,11
-Excel,Power BI,11
-Python,data visualization,11
+C#,C++,69
+C#,Python,44
+C++,Python,44
+AWS,Python,38
+JavaScript,Python,38
+Python,SQL,37
+Git,Python,37
+C#,Java,35
+C++,Java,35
+Python,machine learning,31
+Java,Python,31
+JavaScript,React,29
+Agile,Python,29
+C#,Git,28
+C++,Git,28
+Python,React,27
+Git,JavaScript,27
+Java,JavaScript,27
+C#,Linux,26
+C++,Linux,26
+Python,reporting,25
+AWS,JavaScript,24
+Linux,Python,24
+Agile,Git,24
+Agile,Java,24

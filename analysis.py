@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+import os
 from collections import Counter
 from pathlib import Path
 from typing import Iterable, List
 
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 from database import DATABASE_PATH, import_csv_to_sqlite
 from recommendation import DEFAULT_CURRENT_SKILLS, build_learning_plan, build_recommendations
@@ -177,6 +177,8 @@ def analyze_skill_cooccurrence(df: pd.DataFrame) -> pd.DataFrame:
 def analyze_tfidf_terms(df: pd.DataFrame, top_n: int = 25) -> pd.DataFrame:
     """Use TF-IDF to identify important terms across job descriptions."""
 
+    from sklearn.feature_extraction.text import TfidfVectorizer
+
     documents = df["clean_description"].fillna("").tolist()
     vectorizer = TfidfVectorizer(
         stop_words="english",
@@ -279,10 +281,15 @@ def save_analysis_outputs(df: pd.DataFrame) -> None:
     cooccurrence.to_csv(OUTPUT_DIR / "skill_cooccurrence.csv", index=False)
     recommendations.to_csv(OUTPUT_DIR / "skill_gap_recommendation.csv", index=False)
 
-    try:
-        analyze_tfidf_terms(df).to_csv(OUTPUT_DIR / "top_tfidf_terms.csv", index=False)
-    except ValueError:
-        print("Skipped TF-IDF output because the dataset is too small after filtering.")
+    if os.getenv("RUN_TFIDF", "0") == "1":
+        try:
+            analyze_tfidf_terms(df).to_csv(OUTPUT_DIR / "top_tfidf_terms.csv", index=False)
+        except ValueError:
+            print("Skipped TF-IDF output because the dataset is too small after filtering.")
+    else:
+        pd.DataFrame(columns=["term", "tfidf_score"]).to_csv(
+            OUTPUT_DIR / "top_tfidf_terms.csv", index=False
+        )
 
     add_tableau_flag_columns(df).to_csv(TABLEAU_CSV_PATH, index=False)
     export_tableau_long_format(df)

@@ -1,141 +1,205 @@
 job_category,skill,demand_count
-AI / Machine Learning Intern,Python,14
-AI / Machine Learning Intern,machine learning,13
+AI / Machine Learning Intern,Python,25
+AI / Machine Learning Intern,machine learning,23
+AI / Machine Learning Intern,AWS,9
+AI / Machine Learning Intern,Azure,9
+AI / Machine Learning Intern,prototyping,9
+AI / Machine Learning Intern,Docker,8
+AI / Machine Learning Intern,Git,8
+AI / Machine Learning Intern,Google Cloud,8
+AI / Machine Learning Intern,PyTorch,8
+AI / Machine Learning Intern,SQL,8
+AI / Machine Learning Intern,reporting,8
+AI / Machine Learning Intern,business process,7
 AI / Machine Learning Intern,deep learning,7
-AI / Machine Learning Intern,scikit-learn,6
-AI / Machine Learning Intern,NLP,5
-AI / Machine Learning Intern,TensorFlow,4
-AI / Machine Learning Intern,computer vision,4
-AI / Machine Learning Intern,data cleaning,4
-AI / Machine Learning Intern,pandas,4
-AI / Machine Learning Intern,PyTorch,3
+AI / Machine Learning Intern,C#,6
+AI / Machine Learning Intern,C++,6
+AI / Machine Learning Intern,TensorFlow,6
+AI / Machine Learning Intern,JavaScript,5
+AI / Machine Learning Intern,cybersecurity,5
+AI / Machine Learning Intern,Agile,4
+AI / Machine Learning Intern,Excel,4
+AI / Machine Learning Intern,GitHub,4
+AI / Machine Learning Intern,R,4
+AI / Machine Learning Intern,dashboard,4
+AI / Machine Learning Intern,scikit-learn,4
+AI / Machine Learning Intern,Power BI,3
+AI / Machine Learning Intern,Tableau,3
 AI / Machine Learning Intern,data visualization,3
-AI / Machine Learning Intern,reporting,2
-AI / Machine Learning Intern,statistics,2
-AI / Machine Learning Intern,Azure,1
-AI / Machine Learning Intern,Excel,1
-Business Analyst Intern,Excel,8
-Business Analyst Intern,Power BI,7
-Business Analyst Intern,reporting,7
-Business Analyst Intern,SQL,6
-Business Analyst Intern,dashboard,6
-Business Analyst Intern,data visualization,4
-Business Analyst Intern,requirements analysis,2
-Business Analyst Intern,Google Data Studio,1
-Business Analyst Intern,Looker,1
-Business Analyst Intern,UAT,1
-Business Analyst Intern,business process,1
-Cybersecurity / IT Intern,Linux,6
-Cybersecurity / IT Intern,cybersecurity,4
-Cybersecurity / IT Intern,incident response,4
-Cybersecurity / IT Intern,vulnerability assessment,3
-Cybersecurity / IT Intern,firewall,2
+AI / Machine Learning Intern,CRM,2
+AI / Machine Learning Intern,Java,2
+AI / Machine Learning Intern,NLP,2
+AI / Machine Learning Intern,NumPy,2
+AI / Machine Learning Intern,React,2
+AI / Machine Learning Intern,TypeScript,2
+AI / Machine Learning Intern,computer vision,2
+AI / Machine Learning Intern,networking,2
+AI / Machine Learning Intern,pandas,2
+AI / Machine Learning Intern,Figma,1
+AI / Machine Learning Intern,HTML/CSS,1
+AI / Machine Learning Intern,IT documentation,1
+AI / Machine Learning Intern,Linux,1
+AI / Machine Learning Intern,Node.js,1
+AI / Machine Learning Intern,OOP,1
+AI / Machine Learning Intern,PostgreSQL,1
+AI / Machine Learning Intern,UI/UX design,1
+AI / Machine Learning Intern,incident response,1
+AI / Machine Learning Intern,statistics,1
+AI / Machine Learning Intern,troubleshooting,1
+Business Analyst Intern,Power BI,1
+Business Analyst Intern,Python,1
+Business Analyst Intern,R,1
+Business Analyst Intern,Tableau,1
+Business Analyst Intern,data visualization,1
+Business Analyst Intern,machine learning,1
+Business Analyst Intern,statistics,1
+Cybersecurity / IT Intern,C#,11
+Cybersecurity / IT Intern,C++,11
+Cybersecurity / IT Intern,Linux,9
+Cybersecurity / IT Intern,Java,6
+Cybersecurity / IT Intern,Python,6
+Cybersecurity / IT Intern,troubleshooting,6
+Cybersecurity / IT Intern,OOP,4
+Cybersecurity / IT Intern,Git,3
+Cybersecurity / IT Intern,React,3
+Cybersecurity / IT Intern,reporting,3
+Cybersecurity / IT Intern,IT documentation,2
+Cybersecurity / IT Intern,JavaScript,2
+Cybersecurity / IT Intern,R,2
 Cybersecurity / IT Intern,networking,2
-Cybersecurity / IT Intern,troubleshooting,2
-Cybersecurity / IT Intern,AWS,1
+Cybersecurity / IT Intern,software testing,2
+Cybersecurity / IT Intern,Agile,1
+Cybersecurity / IT Intern,Docker,1
 Cybersecurity / IT Intern,Excel,1
-Cybersecurity / IT Intern,IT documentation,1
-Cybersecurity / IT Intern,reporting,1
-Data Analyst Intern,reporting,17
-Data Analyst Intern,dashboard,16
-Data Analyst Intern,Excel,13
-Data Analyst Intern,data cleaning,13
-Data Analyst Intern,SQL,12
-Data Analyst Intern,Tableau,10
-Data Analyst Intern,Python,7
-Data Analyst Intern,data visualization,7
-Data Analyst Intern,Power BI,3
-Data Analyst Intern,pandas,3
-Data Analyst Intern,Google Data Studio,1
-Data Analyst Intern,NLP,1
-Data Analyst Intern,PostgreSQL,1
-Data Analyst Intern,SQLite,1
-Data Analyst Intern,machine learning,1
-Data Analyst Intern,prototyping,1
-Data Analyst Intern,scikit-learn,1
-Data Science Intern,Python,6
-Data Science Intern,pandas,6
-Data Science Intern,machine learning,5
-Data Science Intern,scikit-learn,4
-Data Science Intern,statistics,4
-Data Science Intern,data cleaning,3
-Data Science Intern,data visualization,2
-Data Science Intern,Excel,1
-Data Science Intern,NumPy,1
-Data Science Intern,Tableau,1
-Data Science Intern,reporting,1
-Information Systems Intern,Excel,7
-Information Systems Intern,UAT,7
-Information Systems Intern,business process,7
-Information Systems Intern,requirements analysis,6
-Information Systems Intern,CRM,4
-Information Systems Intern,system analysis,4
-Information Systems Intern,IT documentation,3
-Information Systems Intern,ERP,2
-Information Systems Intern,reporting,2
-Information Systems Intern,Google Data Studio,1
+Cybersecurity / IT Intern,HTML/CSS,1
+Cybersecurity / IT Intern,Power BI,1
+Cybersecurity / IT Intern,TypeScript,1
+Cybersecurity / IT Intern,business process,1
+Cybersecurity / IT Intern,cybersecurity,1
+Cybersecurity / IT Intern,data visualization,1
+Cybersecurity / IT Intern,requirements analysis,1
+Data Analyst Intern,Excel,7
+Data Analyst Intern,dashboard,5
+Data Analyst Intern,reporting,5
+Data Analyst Intern,networking,4
+Data Analyst Intern,CRM,3
+Data Analyst Intern,C#,1
+Data Analyst Intern,C++,1
+Data Analyst Intern,Express.js,1
+Data Analyst Intern,JavaScript,1
+Data Analyst Intern,Python,1
+Data Analyst Intern,SQL,1
+Data Analyst Intern,business process,1
+Data Analyst Intern,data visualization,1
+Data Science Intern,Python,1
+Data Science Intern,SQL,1
+Data Science Intern,machine learning,1
+Data Science Intern,statistics,1
+Information Systems Intern,Excel,3
+Information Systems Intern,CRM,2
+Information Systems Intern,JavaScript,2
+Information Systems Intern,Python,2
+Information Systems Intern,C#,1
+Information Systems Intern,C++,1
+Information Systems Intern,Git,1
+Information Systems Intern,GitHub,1
+Information Systems Intern,HTML/CSS,1
+Information Systems Intern,Java,1
+Information Systems Intern,MySQL,1
+Information Systems Intern,PostgreSQL,1
 Information Systems Intern,Power BI,1
-Information Systems Intern,dashboard,1
+Information Systems Intern,React,1
+Information Systems Intern,UI/UX design,1
+Information Systems Intern,business process,1
+Information Systems Intern,networking,1
 Information Systems Intern,troubleshooting,1
-Multimedia / UIUX Intern,motion graphics,5
-Multimedia / UIUX Intern,Figma,4
-Multimedia / UIUX Intern,UI/UX design,4
-Multimedia / UIUX Intern,prototyping,4
-Multimedia / UIUX Intern,Adobe Premiere Pro,3
-Multimedia / UIUX Intern,wireframing,3
-Multimedia / UIUX Intern,Adobe Illustrator,2
-Multimedia / UIUX Intern,Adobe Photoshop,2
-Multimedia / UIUX Intern,HTML/CSS,2
-Multimedia / UIUX Intern,Unity,2
-Multimedia / UIUX Intern,video editing,2
-Multimedia / UIUX Intern,Blender,1
+Multimedia / UIUX Intern,CRM,3
+Multimedia / UIUX Intern,prototyping,3
+Multimedia / UIUX Intern,Agile,2
+Multimedia / UIUX Intern,Git,2
+Multimedia / UIUX Intern,OOP,2
+Multimedia / UIUX Intern,React,2
+Multimedia / UIUX Intern,UI/UX design,2
+Multimedia / UIUX Intern,requirements analysis,2
+Multimedia / UIUX Intern,statistics,2
+Multimedia / UIUX Intern,AWS,1
+Multimedia / UIUX Intern,Adobe Photoshop,1
+Multimedia / UIUX Intern,Adobe Premiere Pro,1
 Multimedia / UIUX Intern,C#,1
 Multimedia / UIUX Intern,C++,1
-Multimedia / UIUX Intern,Git,1
+Multimedia / UIUX Intern,ERP,1
+Multimedia / UIUX Intern,Excel,1
+Multimedia / UIUX Intern,Figma,1
 Multimedia / UIUX Intern,JavaScript,1
-Multimedia / UIUX Intern,business process,1
-Multimedia / UIUX Intern,game development,1
-Product Analyst Intern,SQL,8
-Product Analyst Intern,dashboard,8
-Product Analyst Intern,reporting,8
-Product Analyst Intern,data visualization,7
-Product Analyst Intern,Excel,6
-Product Analyst Intern,Looker,4
-Product Analyst Intern,Python,3
-Product Analyst Intern,Tableau,3
-Product Analyst Intern,Google Data Studio,1
-Product Analyst Intern,NLP,1
-Product Analyst Intern,game development,1
-Product Analyst Intern,machine learning,1
-Product Analyst Intern,statistics,1
-Software Engineering Intern,REST API,9
-Software Engineering Intern,SQL,9
-Software Engineering Intern,Git,8
-Software Engineering Intern,GitHub,8
-Software Engineering Intern,Python,7
-Software Engineering Intern,data cleaning,7
-Software Engineering Intern,JavaScript,6
-Software Engineering Intern,AWS,4
-Software Engineering Intern,MySQL,4
-Software Engineering Intern,React,4
-Software Engineering Intern,software testing,4
-Software Engineering Intern,Agile,3
-Software Engineering Intern,Docker,3
-Software Engineering Intern,reporting,3
-Software Engineering Intern,Firebase,2
-Software Engineering Intern,HTML/CSS,2
-Software Engineering Intern,Node.js,2
-Software Engineering Intern,PostgreSQL,2
-Software Engineering Intern,Excel,1
-Software Engineering Intern,Express.js,1
-Software Engineering Intern,Figma,1
-Software Engineering Intern,Flutter,1
-Software Engineering Intern,Google Cloud,1
-Software Engineering Intern,Java,1
-Software Engineering Intern,Linux,1
-Software Engineering Intern,MongoDB,1
-Software Engineering Intern,OOP,1
-Software Engineering Intern,PHP,1
-Software Engineering Intern,SQLite,1
-Software Engineering Intern,Tableau,1
-Software Engineering Intern,dashboard,1
+Multimedia / UIUX Intern,SQL,1
+Multimedia / UIUX Intern,TypeScript,1
+Multimedia / UIUX Intern,Unity,1
+Multimedia / UIUX Intern,incident response,1
+Multimedia / UIUX Intern,motion graphics,1
+Multimedia / UIUX Intern,networking,1
+Multimedia / UIUX Intern,reporting,1
+Multimedia / UIUX Intern,video editing,1
+Product Analyst Intern,Agile,1
+Product Analyst Intern,Excel,1
+Product Analyst Intern,Python,1
+Product Analyst Intern,R,1
+Product Analyst Intern,SQL,1
+Product Analyst Intern,networking,1
+Product Analyst Intern,prototyping,1
+Software Engineering Intern,Python,74
+Software Engineering Intern,JavaScript,51
+Software Engineering Intern,C#,49
+Software Engineering Intern,C++,49
+Software Engineering Intern,Java,45
+Software Engineering Intern,AWS,42
+Software Engineering Intern,Agile,41
+Software Engineering Intern,Git,40
+Software Engineering Intern,SQL,38
+Software Engineering Intern,React,37
+Software Engineering Intern,OOP,27
+Software Engineering Intern,TypeScript,27
+Software Engineering Intern,networking,26
+Software Engineering Intern,reporting,24
+Software Engineering Intern,Azure,22
+Software Engineering Intern,Linux,22
+Software Engineering Intern,Docker,19
+Software Engineering Intern,GitHub,16
+Software Engineering Intern,Google Cloud,16
+Software Engineering Intern,Node.js,16
+Software Engineering Intern,HTML/CSS,14
+Software Engineering Intern,machine learning,14
+Software Engineering Intern,PostgreSQL,12
+Software Engineering Intern,R,11
+Software Engineering Intern,UI/UX design,11
+Software Engineering Intern,business process,10
+Software Engineering Intern,dashboard,10
+Software Engineering Intern,data visualization,9
+Software Engineering Intern,prototyping,9
+Software Engineering Intern,troubleshooting,8
+Software Engineering Intern,IT documentation,7
+Software Engineering Intern,software testing,7
+Software Engineering Intern,Excel,5
+Software Engineering Intern,MongoDB,5
+Software Engineering Intern,MySQL,5
+Software Engineering Intern,cybersecurity,5
+Software Engineering Intern,Express.js,4
+Software Engineering Intern,NLP,4
+Software Engineering Intern,REST API,4
+Software Engineering Intern,statistics,4
+Software Engineering Intern,CRM,3
+Software Engineering Intern,Power BI,3
+Software Engineering Intern,Tableau,3
+Software Engineering Intern,Figma,2
+Software Engineering Intern,Looker,2
+Software Engineering Intern,NumPy,2
+Software Engineering Intern,PHP,2
+Software Engineering Intern,PyTorch,2
+Software Engineering Intern,TensorFlow,2
+Software Engineering Intern,deep learning,2
+Software Engineering Intern,pandas,2
+Software Engineering Intern,requirements analysis,2
+Software Engineering Intern,ERP,1
+Software Engineering Intern,React Native,1
+Software Engineering Intern,firewall,1
+Software Engineering Intern,scikit-learn,1
+Software Engineering Intern,system analysis,1

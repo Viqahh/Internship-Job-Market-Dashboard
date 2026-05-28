@@ -35,17 +35,28 @@ The dashboard analyzes internship job postings and shows:
 
 ## How It Works
 
-The project uses a CSV dataset of internship job postings. Each posting contains details such as job title, company, location, work mode, job description, required skills, tools, and source platform.
+The project now uses a real public job-posting dataset:
+
+[Tech Job Postings Dataset 2026 on Hugging Face](https://huggingface.co/datasets/Sundaydream/tech-jobs-dataset-2026)
+
+The source dataset contains real tech job titles, companies, locations, workplace type, employment type, salary range, and descriptions. This project filters the data to internship / early-career style postings, then converts it into the dashboard format.
+
+Some fields are not available in the source:
+
+- `date_posted` is saved as `Not provided by source`
+- `internship_duration` is extracted from the title/description when possible
+- skills/tools are extracted from the job description using NLP keyword matching
 
 The system then:
 
-1. Cleans the job posting data using Python and pandas.
-2. Reads the job description text.
-3. Extracts skills and tools using simple NLP keyword matching.
-4. Classifies each job into a role category.
-5. Stores the cleaned data in SQLite.
-6. Displays the results in an interactive Streamlit dashboard.
-7. Recommends what skills the user should learn next.
+1. Imports the real source JSON into `data/raw_job_postings.csv`.
+2. Cleans the job posting data using Python and pandas.
+3. Reads the job description text.
+4. Extracts skills and tools using simple NLP keyword matching.
+5. Classifies each job into a role category.
+6. Stores the cleaned data in SQLite.
+7. Displays the results in an interactive Streamlit dashboard.
+8. Recommends what skills the user should learn next.
 
 ## Skill Gap Recommendation
 
@@ -76,7 +87,7 @@ This helps students focus on skills that appear often in internship postings.
 - scikit-learn
 - SQLite
 - Streamlit
-- Matplotlib
+- Altair
 - Tableau-ready CSV export
 
 ## How To Run
@@ -85,6 +96,7 @@ This helps students focus on skills that appear often in internship postings.
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+python real_dataset_importer.py
 python analysis.py
 streamlit run app.py
 ```
@@ -93,11 +105,14 @@ streamlit run app.py
 
 ```text
 app.py                         Streamlit dashboard
+real_dataset_importer.py       Converts the real public dataset into this project schema
 analysis.py                    Data cleaning and analysis pipeline
 skill_extractor.py             Skill and tool extraction logic
 role_classifier.py             Internship role classification logic
 recommendation.py              Skill gap recommendation logic
 database.py                    SQLite database functions
+data/source_hf_tech_jobs_2026.json  Real source dataset
+data/raw_job_postings.csv      Converted raw dataset
 data/cleaned_job_postings.csv  Cleaned dataset used by the dashboard
 database/job_market.db         SQLite database
 ```

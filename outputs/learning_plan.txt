@@ -1,5 +1,5 @@
-1. Step 1: reporting - Learn how to turn analysis results into short business summaries. Market demand: 43.2% of postings.
-2. Step 2: dashboard - Learn how to design KPI cards, filters, chart hierarchy, and an insight section. Market demand: 33.7% of postings.
-3. Step 3: Excel - Learn pivot tables, lookup formulas, sorting, filtering, and quick business reports. Market demand: 40.0% of postings.
-4. Step 4: data cleaning - Learn how to handle missing values, duplicates, inconsistent text, and messy CSV files. Market demand: 28.4% of postings.
-5. Step 5: data visualization - Learn how to choose the right chart and explain the message clearly. Market demand: 24.2% of postings.
+1. Step 1: JavaScript - Learn web interactivity, API calls, and frontend logic. Market demand: 32.3% of postings.
+2. Step 2: C# - Learn the basics of C# and show it in a small portfolio task. Market demand: 35.9% of postings.
+3. Step 3: C++ - Learn the basics of C++ and show it in a small portfolio task. Market demand: 35.9% of postings.
+4. Step 4: Git - Learn version control, branching, and clean commits. Market demand: 28.1% of postings.
+5. Step 5: React - Learn components, props, state, events, and form handling. Market demand: 23.4% of postings.
